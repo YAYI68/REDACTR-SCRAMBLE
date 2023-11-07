@@ -11,6 +11,7 @@ const notify = document.querySelector(".alert");
 const wordScanned = document.querySelector(".word_scanned");
 const wordScramb = document.querySelector(".word_scramb");
 const characterScramb = document.querySelector(".character_scramb");
+const totalTime = document.querySelector(".total_time");
 const notFoundAlert = document.querySelector(".notFound");
 
 form?.addEventListener("submit", (e) => {
@@ -28,48 +29,54 @@ form?.addEventListener("submit", (e) => {
     return;
   }
   loader?.classList.remove("hidden");
-
-  let { content, totalCharacterScrambs, totalWordScrambs } = scrambWord(
-    redartList,
-    contentArray,
-    sym
-  );
-  // console.log({ totalCharacterScrambs, totalWordScrambs });
-  copyWord.textContent = content.join(" ");
+  const startTime = new Date();
+  const content = getNewContent(textArea, redartList, sym);
+  const { totalScanned, totalCharacterScramb } = getStat(textArea, redartList);
+  const endTime = new Date();
+  const timeDifference = (endTime - startTime) / 1000;
+  copyWord.textContent = content;
   wordScanned.textContent = content.length;
-  wordScramb.textContent = totalWordScrambs;
-  characterScramb.textContent = totalCharacterScrambs;
+  wordScramb.textContent = totalScanned;
+  characterScramb.textContent = totalCharacterScramb;
+  totalTime.textContent = `${timeDifference} secs`;
 
-  if (content.length === contentArray.length) {
-    if (content.join(" ").includes(sym)) {
-      notFoundAlert?.classList.add("hidden");
-    } else {
-      notFoundAlert?.classList.remove("hidden");
-    }
-    setTimeout(() => {
-      loader?.classList.add("hidden");
-      bgOverLay?.classList.remove("hidden");
-    }, 1000);
+  if (content.includes(sym)) {
+    notFoundAlert?.classList.add("hidden");
+  } else {
+    notFoundAlert?.classList.remove("hidden");
   }
+
+  setTimeout(() => {
+    loader?.classList.add("hidden");
+    bgOverLay?.classList.remove("hidden");
+  }, 1000);
 });
 
 cancelBtn?.addEventListener("click", () => {
   bgOverLay?.classList.add("hidden");
 });
 
-const scrambWord = (redart, allWord, sym) => {
-  let totalCharacterScrambs = 0;
-  let totalWordScrambs = 0;
-  let content = [];
-  for (let i = 0; i < allWord.length; i++) {
-    let word = allWord[i];
-    if (redart.includes(word)) {
-      content.push(sym.repeat(word.length));
-      totalCharacterScrambs += word.length;
-      totalWordScrambs += 1;
-    } else {
-      content.push(word);
+const getNewContent = (text, redartList, sym) => {
+  let content = text;
+  for (let redart of redartList) {
+    let newContent = content.replaceAll(redart, sym.repeat(redart.length));
+    content = newContent;
+  }
+  return content;
+};
+
+const getStat = (textArea, redartList) => {
+  const contentList = textArea.split(" ");
+  let totalScanned = 0;
+  let totalCharacterScramb = 0;
+
+  for (let word of contentList) {
+    for (let redart of redartList) {
+      if (word.includes(redart)) {
+        totalScanned += 1;
+        totalCharacterScramb += redart.length;
+      }
     }
   }
-  return { content, totalCharacterScrambs, totalWordScrambs };
+  return { totalScanned, totalCharacterScramb };
 };
