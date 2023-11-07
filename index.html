@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./index.js" defer></script>
+    <title>REDACTR - SCRAMBLE</title>
+  </head>
+  <body>
+    <section class="redactContainer">
+      <h1 class="header">REDACTR - SCRAMBLE</h1>
+      <p class="alert hidden"></p>
+      <form action="" class="formContainer">
+        <div class="inputContainer">
+          <label for="">Write Text </label>
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+            class="contentArea"
+            placeholder="Write your text"
+            required
+          ></textarea>
+        </div>
+
+        <div class="inputContainer">
+          <label for=""> Scramb Words <span style="color: blue">*</span></label>
+          <input
+            type="text"
+            class="word"
+            required
+            placeholder="Write words to scramb separated by space (' ')"
+          />
+        </div>
+        <div class="inputContainer">
+          <label for=""> Scramb Symbols </label>
+          <select name="" id="" class="symbol">
+            <option value="?">?</option>
+            <option value="*">*</option>
+            <option value="_">_</option>
+            <option value="-">-</option>
+            <option value="#">#</option>
+            <option value="@">@</option>
+            <option value="$">$</option>
+          </select>
+        </div>
+
+        <button class="btnSubmit">
+          <span>Redact Now</span> <span class="custom-loader hidden"></span>
+        </button>
+      </form>
+    </section>
+
+    <section class="overlay hidden">
+      <div class="overlay_top">
+        <div class="stat">
+          <h3>Words Stats</h3>
+          <p>
+            <span>Total words scanned:</span> <span class="word_scanned"></span>
+          </p>
+          <p>
+            <span>Total words Scramb:</span> <span class="word_scramb"></span>
+          </p>
+          <p>
+            <span>Total Charater Scramb:</span>
+            <span class="character_scramb"></span>
+          </p>
+        </div>
+        <p class="notFound hidden">
+          Sorry, No match was found for the word to be scramb
+        </p>
+      </div>
+
+      <div class="copyBox">
+        <button class="cancelBtn" title="close">X</button>
+        <p class="copyWord"></p>
+        <button class="copyBtn">copy</button>
+      </div>
+    </section>
+  </body>
+</html>
